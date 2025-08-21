@@ -7,7 +7,7 @@ import Button from "./ui/Button";
 
 export default function Hero() {
   return (
-    <section className="relative bg-base-100 dark:from-gray-900 dark:to-gray-800 pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
+    <section className="relative bg-base-100 pt-16 pb-8 md:pt-24 md:pb-16 overflow-hidden">
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           {/* Content */}
@@ -90,8 +90,8 @@ export default function Hero() {
       </div>
       
       {/* Features section */}
-      <div id="features" className="relative mt-20 md:mt-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="features" className="relative mt-8 md:mt-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
             Why Choose Next Gadget?
           </h2>
