@@ -77,7 +77,7 @@ export default function ProductsGrid({ products }) {
                 )}
                 <div>
                     <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                    ${product.price?.toFixed(2)}
+                     Price: ${product.price?.toFixed(2)}
                   </span>
                 </div>
                 <div className="mt-5">

@@ -40,9 +40,9 @@ export default function Navbar() {
 
       {/* Center (Desktop Menu) */}
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal gap-4 px-1">
+        <ul className="">
           <li>
-            <Link href="/products" className="font-medium hover:text-indigo-500">
+            <Link href="/products" className="hover:text-indigo-500 hover:underline">
               Products
             </Link>
           </li>
