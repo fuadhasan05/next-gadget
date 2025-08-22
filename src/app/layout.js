@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "next-themes";
 import Footer from "@/components/Footer";
+import Providers from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,11 +27,18 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem>
-          <Navbar />
-          {children}
-          <Footer/>
-        </ThemeProvider>
+        {/* ✅ Provide auth session everywhere */}
+        <Providers>
+          <ThemeProvider
+            attribute="data-theme"
+            defaultTheme="light"
+            enableSystem
+          >
+            <Navbar />
+            {children}
+            <Footer />
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
