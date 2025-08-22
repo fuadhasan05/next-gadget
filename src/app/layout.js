@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "next-themes";
 import Footer from "@/components/Footer";
 import Providers from "./providers";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,7 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* ✅ Provide auth session everywhere */}
+        {/* ✅ Auth + Theme Providers */}
         <Providers>
           <ThemeProvider
             attribute="data-theme"
@@ -35,7 +36,13 @@ export default function RootLayout({ children }) {
             enableSystem
           >
             <Navbar />
-            {children}
+            
+            {/* Page Content */}
+            <main>{children}</main>
+
+            {/* ✅ Global Toast Notifications */}
+            <Toaster position="top-right" reverseOrder={false} />
+
             <Footer />
           </ThemeProvider>
         </Providers>

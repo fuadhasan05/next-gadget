@@ -1,10 +1,16 @@
 "use client";
 
 import { signIn } from "next-auth/react";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
-  const handleGoogleLogin = () => {
-    signIn("google");
+  const handleGoogleLogin = async () => {
+    try {
+      await signIn("google", { redirect: true, callbackUrl: "/dashboard/add-product" });
+      toast.success("✅ Logged in successfully!");
+    } catch (err) {
+      toast.error("❌ Google login failed!");
+    }
   };
 
   const handleCredentialsLogin = async (e) => {
@@ -12,16 +18,23 @@ export default function LoginPage() {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    await signIn("credentials", {
+    const res = await signIn("credentials", {
       email,
       password,
-      redirect: true, // ✅ will redirect to /products automatically
+      redirect: true,
+      callbackUrl: "/dashboard/add-product", // redirect after login
     });
+
+    if (res?.error) {
+      toast.error("❌ Invalid credentials!");
+    } else {
+      toast.success("✅ Logged in successfully!");
+    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-base-100">
-      <div className="bg-base-200 p-8 rounded-xl shadow-md w-full max-w-md">
+    <div className="flex items-center justify-center bg-base-100 min-h-screen w-full">
+      <div className="bg-base-200 p-8 rounded-xl shadow-md max-w-md">
         <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
 
         {/* Credentials Login */}
@@ -52,7 +65,7 @@ export default function LoginPage() {
         {/* Google Login */}
         <button
           onClick={handleGoogleLogin}
-          className="w-full bg-red-500 text-white py-2 rounded-lg"
+          className="w-full bg-gray-600 text-white py-2 rounded-lg"
         >
           Continue with Google
         </button>

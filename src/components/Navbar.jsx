@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import { FiSun, FiMoon, FiMenu } from "react-icons/fi";
 import Button from "./ui/Button";
 import { useSession, signOut } from "next-auth/react";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
@@ -37,6 +38,23 @@ export default function Navbar() {
                 Products
               </Link>
             </li>
+            <li>
+              {session ? (
+                <Link
+                  href="/dashboard/add-product"
+                  className="hover:text-indigo-500 hover:underline"
+                >
+                  Add Product
+                </Link>
+              ) : (
+                <Link
+                  href="/login?callbackUrl=/dashboard/add-product"
+                  className="hover:text-indigo-500 hover:underline"
+                >
+                  Add Product
+                </Link>
+              )}
+            </li>
           </ul>
         </div>
 
@@ -58,13 +76,19 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-3">
             {session ? (
               <>
-                {/* Show user name/email clickable → add-product */}
-                <Link href="/dashboard/add-product">
-                  <span className="cursor-pointer font-medium text-indigo-600 dark:text-indigo-300 hover:underline">
-                    {session.user?.name || session.user?.email}
-                  </span>
-                </Link>
-                <Button variant="secondary" onClick={() => signOut()}>
+                <span className="font-medium text-indigo-600 dark:text-indigo-300">
+                  {session.user?.name || session.user?.email}
+                </span>
+                {/* // inside Navbar return: */}
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    toast.success("👋 Logged out successfully!");
+                    setTimeout(() => {
+                      signOut({ callbackUrl: "/" });
+                    }, 800); // wait a bit so user sees the toast
+                  }}
+                >
                   Logout
                 </Button>
               </>
@@ -87,13 +111,15 @@ export default function Navbar() {
               <li>
                 <Link href="/products">Products</Link>
               </li>
-              {session && (
-                <li>
-                  <Link href="/dashboard/add-product">
-                    {session.user?.name || session.user?.email}
+              <li>
+                {session ? (
+                  <Link href="/dashboard/add-product">Add Product</Link>
+                ) : (
+                  <Link href="/login?callbackUrl=/dashboard/add-product">
+                    Add Product
                   </Link>
-                </li>
-              )}
+                )}
+              </li>
               <li>
                 {session ? (
                   <button onClick={() => signOut()}>Logout</button>
