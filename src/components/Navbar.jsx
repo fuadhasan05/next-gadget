@@ -16,66 +16,67 @@ export default function Navbar() {
   return (
     <div className="bg-base-100 w-full top-0 z-50 sticky shadow-sm">
       <div className="container mx-auto navbar px-4 lg:px-8">
-      {/* Left */}
-      <div className="navbar-start">
-        {/* Mobile Dropdown */}
-        <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
-            <FiMenu className="h-6 w-6" />
-          </label>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow"
-          >
+        {/* Left */}
+        <div className="navbar-start">
+          <Link href="/" className="flex items-center">
+            <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+              Next Gadget
+            </span>
+          </Link>
+        </div>
+
+        {/* Center (Desktop Menu) */}
+        <div className="navbar-center hidden lg:flex">
+          <ul className="">
             <li>
-              <Link href="/products">Products</Link>
-              <Link href="/login">
-                {" "}
-                <Button variant="primary">Login</Button>
+              <Link
+                href="/products"
+                className="hover:text-indigo-500 hover:underline"
+              >
+                Products
               </Link>
             </li>
           </ul>
         </div>
-        <Link href="/" className="flex items-center">
-          <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-            Next Gadget
-          </span>
-        </Link>
-      </div>
 
-      {/* Center (Desktop Menu) */}
-      <div className="navbar-center hidden lg:flex">
-        <ul className="">
-          <li>
-            <Link
-              href="/products"
-              className="hover:text-indigo-500 hover:underline"
-            >
-              Products
+        {/* Right */}
+        <div className="navbar-end gap-3">
+          {/* Theme Toggle */}
+          <button
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            className="p-2 rounded-lg cursor-pointer"
+          >
+            {theme === "light" ? (
+              <FiMoon className="h-6 w-6 text-gray-700" />
+            ) : (
+              <FiSun className="h-6 w-6 text-yellow-400" />
+            )}
+          </button>
+          <div className="hidden lg:block">
+            <Link href="/login">
+              {" "}
+              <Button variant="primary">Login</Button>
             </Link>
-          </li>
-        </ul>
+          </div>
+          {/* Mobile Dropdown */}
+          <div className="dropdown dropdown-left">
+            <label tabIndex={0} className="btn btn-ghost lg:hidden">
+              <FiMenu className="h-6 w-6" />
+            </label>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box mt-10 w-52 p-2 shadow"
+            >
+              <li>
+                <Link href="/products">Products</Link>
+                <Link href="/login">
+                  <Button variant="primary">Login</Button>
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-
-      {/* Right */}
-      <div className="navbar-end gap-3">
-        {/* Theme Toggle */}
-        <button
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-          className="p-2 rounded-lg cursor-pointer"
-        >
-          {theme === "light" ? (
-            <FiMoon className="h-6 w-6 text-gray-700" />
-          ) : (
-            <FiSun className="h-6 w-6 text-yellow-400" />
-          )}
-        </button>
-        <Link href="/login">
-          {" "}
-          <Button variant="primary">Login</Button>
-        </Link>
-      </div>
-    </div>
     </div>
   );
 }
