@@ -9,6 +9,10 @@ const client = new MongoClient(uri, {
   },
 });
 
+export const collectionNameObj = {
+  productsCollection: "products"
+}
+
 // ensure single connection reuse in dev/hot reload
 let clientPromise;
 

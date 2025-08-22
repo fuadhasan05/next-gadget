@@ -1,30 +1,57 @@
 "use client";
 import React from "react";
-import clsx from "clsx";
+import * as Icons from "react-icons/fi";
 
-export default function Button({
+const Button = ({
   children,
   variant = "primary",
-  className,
-  icon: Icon,            // accept icon as a component
-  iconPosition = "left", // left or right
-  ...props               // other safe props (like onClick, type, disabled)
-}) {
-  const base =
-    "px-4 py-2 rounded-lg font-medium transition-colors duration-200 focus:outline-none inline-flex items-center gap-2";
-  const variants = {
-    primary: "bg-indigo-600 text-white hover:bg-indigo-700",
+  size = "md",
+  iconName,
+  iconPosition = "left",
+  className = "",
+  ...props
+}) => {
+  const baseClasses =
+    "inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+
+  const variantClasses = {
+    primary:
+      "bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500",
     secondary:
-      "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600",
-    outline:
-      "border border-gray-300 hover:bg-gray-700 hover:text-white dark:border-gray-600",
+      "bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600",
+    outline:"border border-gray-300 hover:bg-gray-700 hover:text-white dark:border-gray-600",
+    ghost:
+      "text-gray-700 hover:bg-gray-100 focus:ring-indigo-500 dark:text-white dark:hover:bg-gray-800",
   };
 
+  const sizeClasses = {
+    sm: "px-3 py-1.5 text-sm",
+    md: "px-4 py-2 text-sm",
+    lg: "px-6 py-3 text-base",
+  };
+
+  const iconSize = {
+    sm: 16,
+    md: 18,
+    lg: 20,
+  };
+
+  // Get the icon component by name
+  const IconComponent = iconName ? Icons[iconName] : null;
+
+  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+
   return (
-    <button className={clsx(base, variants[variant], className)} {...props}>
-      {iconPosition === "left" && Icon && <Icon className="h-4 w-4" />}
+    <button className={classes} {...props}>
+      {IconComponent && iconPosition === "left" && (
+        <IconComponent size={iconSize[size]} className="mr-2" />
+      )}
       {children}
-      {iconPosition === "right" && Icon && <Icon className="h-4 w-4" />}
+      {IconComponent && iconPosition === "right" && (
+        <IconComponent size={iconSize[size]} className="ml-2" />
+      )}
     </button>
   );
-}
+};
+
+export default Button;

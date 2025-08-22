@@ -1,10 +1,10 @@
-import dbConnect from "@/lib/dbConnect";
-import ProductsGrid from "./ProductsGrid"; // client component
+import dbConnect, { collectionNameObj } from "@/lib/dbConnect";
+import ProductsGrid from "./ProductsGrid"; 
 
 export default async function Products() {
-  const productCollection = await dbConnect("products");
-  const data = await productCollection.find({}).limit(8).toArray();
-  const products = JSON.parse(JSON.stringify(data)); // serialize MongoDB docs
+  const productsCollection = await dbConnect(collectionNameObj.productsCollection);
+  const data = await productsCollection.find({}).limit(8).toArray();
+  const products = JSON.parse(JSON.stringify(data)); 
 
   return <ProductsGrid products={products} />;
 }

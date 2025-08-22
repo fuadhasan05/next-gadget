@@ -27,7 +27,7 @@ export default function ProductsGrid({ products }) {
               className="bg-base-200 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-100 hover:-translate-y-1"
             >
               {/* Product Image */}
-              <div className="relative h-60 bg-gray-200 dark:bg-gray-700">
+              <div className="relative h-48 bg-gray-200 dark:bg-gray-700">
                 <img
                   src={product.images || "/images/placeholder.jpg"}
                   alt={product.name}
@@ -38,9 +38,9 @@ export default function ProductsGrid({ products }) {
                     Out of Stock
                   </div>
                 )}
-                <button className="absolute top-4 left-4 p-2 bg-white dark:bg-gray-900 rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                {/* <button className="absolute top-4 left-4 p-2 bg-white dark:bg-gray-900 rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <FiHeart className="text-gray-600 dark:text-gray-400 h-5 w-5" />
-                </button>
+                </button> */}
                 {product.category && (
                   <div className="absolute bottom-4 left-4 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 px-3 py-1 rounded-full text-xs font-medium">
                     {product.category}
@@ -53,9 +53,6 @@ export default function ProductsGrid({ products }) {
                 <h2 className="text-xl font-semibold mb-2 line-clamp-1">
                   {product.name}
                 </h2>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                  {product.description}
-                </p>
                 {product.rating && (
                   <div className="flex items-center mb-4">
                     <div className="flex items-center">
@@ -77,7 +74,7 @@ export default function ProductsGrid({ products }) {
                 )}
                 <div>
                     <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                     Price: ${product.price?.toFixed(2)}
+                     ${product.price?.toFixed(2)}
                   </span>
                 </div>
                 <div className="mt-5">
@@ -87,13 +84,13 @@ export default function ProductsGrid({ products }) {
                         Details
                       </Button>
                     </Link>
-                    <Button
+                    {/* <Button
                       size="sm"
                       icon={FiShoppingCart}
                       disabled={!product.inStock}
                     >
-                      Cart
-                    </Button>
+                      Add Cart
+                    </Button> */}
                   </div>
                 </div>
               </div>
