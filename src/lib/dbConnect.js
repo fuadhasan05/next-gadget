@@ -1,5 +1,12 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 
+if (!process.env.MONGODB_URI) {
+  throw new Error("❌ Please add MONGODB_URI to your environment variables");
+}
+if (!process.env.DB_NAME) {
+  throw new Error("❌ Please add DB_NAME to your environment variables");
+}
+
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, {
   serverApi: {
@@ -10,8 +17,8 @@ const client = new MongoClient(uri, {
 });
 
 export const collectionNameObj = {
-  productsCollection: "products"
-}
+  productsCollection: "products",
+};
 
 // ensure single connection reuse in dev/hot reload
 let clientPromise;

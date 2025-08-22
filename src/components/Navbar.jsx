@@ -2,16 +2,17 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { FiSun, FiMoon } from "react-icons/fi";
+import { FiSun, FiMoon, FiMenu } from "react-icons/fi";
 import Button from "./ui/Button";
-import { FiMenu } from "react-icons/fi";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => setMounted(true), []);
-  if (!mounted) return null; // avoid hydration mismatch
+  if (!mounted) return null;
 
   return (
     <div className="bg-base-100 w-full top-0 z-50 sticky shadow-sm">
@@ -25,9 +26,9 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Center (Desktop Menu) */}
+        {/* Center */}
         <div className="navbar-center hidden lg:flex">
-          <ul className="">
+          <ul className="flex gap-4">
             <li>
               <Link
                 href="/products"
@@ -52,12 +53,28 @@ export default function Navbar() {
               <FiSun className="h-6 w-6 text-yellow-400" />
             )}
           </button>
-          <div className="hidden lg:block">
-            <Link href="/login">
-              {" "}
-              <Button variant="primary">Login</Button>
-            </Link>
+
+          {/* Auth Buttons */}
+          <div className="hidden lg:flex items-center gap-3">
+            {session ? (
+              <>
+                {/* Show user name/email clickable → add-product */}
+                <Link href="/dashboard/add-product">
+                  <span className="cursor-pointer font-medium text-indigo-600 dark:text-indigo-300 hover:underline">
+                    {session.user?.name || session.user?.email}
+                  </span>
+                </Link>
+                <Button variant="secondary" onClick={() => signOut()}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Link href="/login">
+                <Button variant="primary">Login</Button>
+              </Link>
+            )}
           </div>
+
           {/* Mobile Dropdown */}
           <div className="dropdown dropdown-left">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -69,9 +86,22 @@ export default function Navbar() {
             >
               <li>
                 <Link href="/products">Products</Link>
-                <Link href="/login">
-                  <Button variant="primary">Login</Button>
-                </Link>
+              </li>
+              {session && (
+                <li>
+                  <Link href="/dashboard/add-product">
+                    {session.user?.name || session.user?.email}
+                  </Link>
+                </li>
+              )}
+              <li>
+                {session ? (
+                  <button onClick={() => signOut()}>Logout</button>
+                ) : (
+                  <Link href="/login">
+                    <Button variant="primary">Login</Button>
+                  </Link>
+                )}
               </li>
             </ul>
           </div>
