@@ -372,9 +372,9 @@ export default async function ProductDetailsPage({ params }) {
 /* --- Helper Components --- */
 function errorPage(message) {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-8">
+    <div className="min-h-screen bg-base-100 pt-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+        <div className="bg-base-200 border-red-200 dark:border-red-800 rounded-lg p-8">
           <svg
             className="h-12 w-12 text-red-400 mx-auto mb-4"
             fill="none"
@@ -388,10 +388,10 @@ function errorPage(message) {
               d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
             />
           </svg>
-          <h2 className="text-xl font-semibold text-red-800 dark:text-red-200 mb-2">
+          <h2 className="text-xl font-semibold text-red-800 mb-2">
             Error
           </h2>
-          <p className="text-red-600 dark:text-red-300 mb-6">{message}</p>
+          <p className="text-red-600 mb-6">{message}</p>
           <Link href="/products">
             <Button variant="primary" iconName="FiArrowLeft">
               Back to Products
@@ -405,9 +405,9 @@ function errorPage(message) {
 
 function notFoundPage() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-8">
+    <div className="min-h-screen bg-base-100 pt-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+        <div className="bg-base-200 border border-yellow-200 dark:border-yellow-800 rounded-lg p-8">
           <svg
             className="h-12 w-12 text-yellow-400 mx-auto mb-4"
             fill="none"
@@ -421,10 +421,10 @@ function notFoundPage() {
               d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
             />
           </svg>
-          <h2 className="text-xl font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
+          <h2 className="text-xl font-semibold text-yellow-800 mb-2">
             Product Not Found
           </h2>
-          <p className="text-yellow-600 dark:text-yellow-300 mb-6">
+          <p className="text-yellow-600 mb-6">
             The product you're looking for doesn't exist or has been removed.
           </p>
           <Link href="/products">

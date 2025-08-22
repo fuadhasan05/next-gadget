@@ -100,7 +100,7 @@ export default function ProductsGrid({ products }) {
 
         {/* View More Button */}
         <div className="text-center">
-          <Link href="/products/all">
+          <Link href="/products">
             <Button
               variant="primary"
               size="lg"
