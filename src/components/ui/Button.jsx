@@ -18,11 +18,11 @@ const Button = ({
 
   const variantClasses = {
     primary:
-      "bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500",
+      "bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer",
     secondary:
       "bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600",
     outline:
-      "border border-gray-300 hover:bg-gray-700 hover:text-white dark:border-gray-600",
+      "border border-gray-300 hover:bg-gray-700 hover:text-white dark:border-gray-600 cursor-pointer",
     ghost:
       "text-gray-700 hover:bg-gray-100 focus:ring-indigo-500 dark:text-white dark:hover:bg-gray-800",
   };

@@ -14,7 +14,8 @@ export default function Navbar() {
   if (!mounted) return null; // avoid hydration mismatch
 
   return (
-    <div className="container mx-auto navbar bg-base-100 px-4 lg:px-8 top-0 z-50 sticky">
+    <div className="bg-base-100 w-full top-0 z-50 sticky shadow-sm">
+      <div className="container mx-auto navbar px-4 lg:px-8">
       {/* Left */}
       <div className="navbar-start">
         {/* Mobile Dropdown */}
@@ -28,6 +29,10 @@ export default function Navbar() {
           >
             <li>
               <Link href="/products">Products</Link>
+              <Link href="/login">
+                {" "}
+                <Button variant="primary">Login</Button>
+              </Link>
             </li>
           </ul>
         </div>
@@ -42,7 +47,10 @@ export default function Navbar() {
       <div className="navbar-center hidden lg:flex">
         <ul className="">
           <li>
-            <Link href="/products" className="hover:text-indigo-500 hover:underline">
+            <Link
+              href="/products"
+              className="hover:text-indigo-500 hover:underline"
+            >
               Products
             </Link>
           </li>
@@ -62,10 +70,12 @@ export default function Navbar() {
             <FiSun className="h-6 w-6 text-yellow-400" />
           )}
         </button>
-
-        {/* Example Buttons */}
-        <Button variant="primary">Login</Button>
+        <Link href="/login">
+          {" "}
+          <Button variant="primary">Login</Button>
+        </Link>
       </div>
+    </div>
     </div>
   );
 }
