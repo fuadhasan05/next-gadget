@@ -32,7 +32,7 @@ export default function ProductsGrid({ products }) {
               icon={FiArrowRight}
               iconPosition="right"
             >
-              View All Products
+              View All Products <FiArrowRight/>
             </Button>
           </Link>
         </div>

@@ -18,6 +18,7 @@ const client = new MongoClient(uri, {
 
 export const collectionNameObj = {
   productsCollection: "products",
+  usersCollection: 'users',
 };
 
 // ensure single connection reuse in dev/hot reload
