@@ -5,12 +5,16 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import Button from "./ui/Button";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
   const handleGoogleLogin = async () => {
     try {
-      await signIn("google", { redirect: true, callbackUrl: "/products" });
-      // toast.success("✅ Logged in successfully!");
+      await signIn("google", { redirect: true, callbackUrl: "/" });
     } catch (err) {
       toast.error("❌ Google login failed!");
     }
@@ -18,20 +22,24 @@ export default function LoginForm() {
 
   const handleCredentialsLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const res = await signIn("credentials", {
+    const result = await signIn("credentials", {
       email,
       password,
-      redirect: true,
-      callbackUrl: "/products", // redirect after login
+      redirect: false,
     });
 
-    if (res?.error) {
+    if (result?.error) {
       toast.error("❌ Invalid credentials!");
+      setIsLoading(false);
     } else {
       toast.success("✅ Logged in successfully!");
+      // Force a hard refresh to ensure session is loaded
+      window.location.href = "/";
     }
   };
 
@@ -49,16 +57,25 @@ export default function LoginForm() {
             name="email"
             placeholder="Email"
             className="w-full px-4 py-2 border rounded-lg"
-            suppressHydrationWarning
+            required
+            suppressHydrationWarning={true} // Add this line
           />
           <input
             type="password"
             name="password"
             placeholder="Password"
             className="w-full px-4 py-2 border rounded-lg"
+            required
+            suppressHydrationWarning={true} // Also add to password field for consistency
           />
-          <Button type="submit" variant="primary" size="lg" className="w-full">
-            Login
+          <Button 
+            type="submit" 
+            variant="primary" 
+            size="lg" 
+            className="w-full"
+            disabled={isLoading}
+          >
+            {isLoading ? "Logging in..." : "Login"}
           </Button>
         </form>
 
@@ -73,6 +90,7 @@ export default function LoginForm() {
             size="lg"
             className="w-full"
             onClick={handleGoogleLogin}
+            disabled={isLoading}
           >
             <FcGoogle className="h-5 w-5 mr-2" />
             Continue with Google
@@ -81,7 +99,7 @@ export default function LoginForm() {
 
         {/* Register Link */}
         <p className="text-center mt-6 text-gray-600">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <Link
             href="/register"
             className="text-indigo-600 font-medium hover:underline"

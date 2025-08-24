@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 import Footer from "@/components/Footer";
 import Providers from "./providers";
 import { Toaster } from "react-hot-toast";
+import { UserProvider } from "@/contexts/UserContext"; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,23 +29,27 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* ✅ Auth + Theme Providers */}
+        {/* ✅ Auth + Theme + User Providers */}
         <Providers>
-          <ThemeProvider
-            attribute="data-theme"
-            defaultTheme="light"
-            enableSystem
-          >
-            <Navbar />
-            
-            {/* Page Content */}
-            <main>{children}</main>
+          <UserProvider>
+            {" "}
+            {/* Add UserProvider here */}
+            <ThemeProvider
+              attribute="data-theme"
+              defaultTheme="light"
+              enableSystem
+            >
+              <Navbar />
 
-            {/* ✅ Global Toast Notifications */}
-            <Toaster position="top-right" reverseOrder={false} />
+              {/* Page Content */}
+              <main>{children}</main>
 
-            <Footer />
-          </ThemeProvider>
+              {/* ✅ Global Toast Notifications */}
+              <Toaster position="top-right" reverseOrder={false} />
+
+              <Footer />
+            </ThemeProvider>
+          </UserProvider>
         </Providers>
       </body>
     </html>

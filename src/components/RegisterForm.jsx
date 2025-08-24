@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -10,7 +10,6 @@ import {
   FiEye,
   FiEyeOff,
   FiUser,
-  FiCheck,
 } from "react-icons/fi";
 import Button from "./ui/Button";
 
@@ -27,8 +26,13 @@ export default function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
+  const [isClient, setIsClient] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const validateForm = () => {
     const newErrors = {};
@@ -118,7 +122,7 @@ export default function RegisterForm() {
       }
 
       // Auto-login after successful registration
-      const result = await signIn("credentials", {
+      const result = await signIn('credentials', {
         email: formData.email,
         password: formData.password,
         redirect: false,
@@ -126,9 +130,9 @@ export default function RegisterForm() {
 
       if (result?.error) {
         // Redirect to login page if auto-login fails
-        router.push("/");
+        router.push('/login?message=Registration successful. Please sign in.');
       } else {
-        router.push("/products");
+        router.push('/products');
       }
     } catch (error) {
       setServerError(error.message);
@@ -159,6 +163,24 @@ export default function RegisterForm() {
       : "Weak"
     : "";
 
+  // Don't render form until client-side to prevent hydration mismatch
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-base-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-8 bg-base-200 p-8 rounded-xl shadow-md">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-300 rounded mb-6"></div>
+            <div className="space-y-4">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="h-12 bg-gray-300 rounded"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-base-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-base-200 p-8 rounded-xl shadow-md">
@@ -185,7 +207,10 @@ export default function RegisterForm() {
           <div className="space-y-4">
             {/* Name Input */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium mb-2"
+              >
                 Full Name
               </label>
               <div className="relative">
@@ -200,7 +225,7 @@ export default function RegisterForm() {
                   required
                   value={formData.name}
                   onChange={handleInputChange}
-                  className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2  dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${
+                  className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 text-gray-500  ${
                     errors.name
                       ? "border-red-300"
                       : "border-gray-300 dark:border-gray-600"
@@ -235,12 +260,17 @@ export default function RegisterForm() {
                   required
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2   dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${
+                  className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 text-gray-500 ${
                     errors.email
                       ? "border-red-300"
                       : "border-gray-300 dark:border-gray-600"
                   }`}
                   placeholder="Enter your email"
+                  // Add these attributes to prevent browser extensions from interfering
+                  data-lpignore="true"
+                  data-form-type="other"
+                  autoCorrect="off"
+                  spellCheck="false"
                 />
               </div>
               {errors.email && (
@@ -270,12 +300,17 @@ export default function RegisterForm() {
                   required
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={`block w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2   dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${
+                  className={`block w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 text-gray-500 ${
                     errors.password
                       ? "border-red-300"
                       : "border-gray-300 dark:border-gray-600"
                   }`}
                   placeholder="Create a password"
+                  // Add these attributes to prevent browser extensions from interfering
+                  data-lpignore="true"
+                  data-form-type="other"
+                  autoCorrect="off"
+                  spellCheck="false"
                 />
                 <button
                   type="button"
@@ -336,12 +371,17 @@ export default function RegisterForm() {
                   required
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className={`block w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2   dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${
+                  className={`block w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 text-gray-500 ${
                     errors.confirmPassword
                       ? "border-red-300"
                       : "border-gray-300 dark:border-gray-600"
                   }`}
                   placeholder="Confirm your password"
+                  // Add these attributes to prevent browser extensions from interfering
+                  data-lpignore="true"
+                  data-form-type="other"
+                  autoCorrect="off"
+                  spellCheck="false"
                 />
                 <button
                   type="button"

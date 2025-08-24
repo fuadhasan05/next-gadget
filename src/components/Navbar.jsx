@@ -13,49 +13,47 @@ import {
 } from "react-icons/fi";
 import Button from "./ui/Button";
 import { useSession, signOut } from "next-auth/react";
-import toast from "react-hot-toast";
+import { useUser } from '@/contexts/UserContext';
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { data: session, status, update } = useSession();
+  const { data: session, status } = useSession();
+  const { user: userData, loading: userLoading } = useUser();
 
   useEffect(() => {
     setMounted(true);
-
-    // Debug: Log session data to console
-    console.log("Session status:", status);
-    console.log("Session data:", session);
-  }, [session, status]);
-
-  // Force session update if needed
-  const refreshSession = async () => {
-    await update();
-  };
+  }, []);
 
   if (!mounted) return null;
 
   const handleSignOut = () => {
-    toast.success("👋 Logged out successfully!");
     setTimeout(() => {
       signOut({ callbackUrl: "/" });
-    }, 800);
+    }, 200);
   };
 
-  // Get user display name
+  // Get user display name from userData context
   const getUserDisplayName = () => {
-    if (!session?.user) return null;
+    if (userData?.name) {
+      return userData.name;
+    }
 
-    if (session.user.name) {
+    if (session?.user?.name) {
       return session.user.name;
     }
 
-    if (session.user.email) {
+    if (session?.user?.email) {
       return session.user.email.split("@")[0];
     }
 
     return "User";
+  };
+
+  // Get user email from either source
+  const getUserEmail = () => {
+    return userData?.email || session?.user?.email || "";
   };
 
   return (
@@ -162,7 +160,6 @@ export default function Navbar() {
               <Link
                 href="/cart"
                 className="hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors font-medium"
-                onClick={() => refreshSession()}
               >
                 Cart
               </Link>
@@ -190,13 +187,12 @@ export default function Navbar() {
             href="/cart"
             className="hidden lg:flex p-2 rounded-lg hover:bg-base-200 dark:hover:bg-base-300 transition-colors"
             aria-label="Shopping cart"
-            onClick={() => refreshSession()}
           >
             <FiShoppingCart className="h-6 w-6 text-gray-700 dark:text-gray-300" />
           </Link>
 
           {/* Auth Section */}
-          {status === "loading" ? (
+          {status === "loading" || userLoading ? (
             // Loading skeleton
             <div className="flex items-center gap-3">
               <div className="w-20 h-6 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
@@ -233,9 +229,9 @@ export default function Navbar() {
                     <span className="font-medium text-gray-900 dark:text-white">
                       {getUserDisplayName()}
                     </span>
-                    {session.user?.email && (
+                    {getUserEmail() && (
                       <span className="text-xs text-gray-500 truncate">
-                        {session.user.email}
+                        {getUserEmail()}
                       </span>
                     )}
                   </li>
@@ -262,18 +258,6 @@ export default function Navbar() {
                     <div className="divider my-1"></div>
                   </li>
 
-                  {/* Debug session button (remove in production) */}
-                  {process.env.NODE_ENV === "development" && (
-                    <li>
-                      <button
-                        onClick={() => refreshSession()}
-                        className="text-xs"
-                      >
-                        Refresh Session
-                      </button>
-                    </li>
-                  )}
-
                   {/* Logout */}
                   <li>
                     <button
@@ -292,9 +276,9 @@ export default function Navbar() {
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Hello, {getUserDisplayName()}
                 </span>
-                {session.user?.email && (
+                {getUserEmail() && (
                   <span className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[120px]">
-                    {session.user.email}
+                    {getUserEmail()}
                   </span>
                 )}
               </div>

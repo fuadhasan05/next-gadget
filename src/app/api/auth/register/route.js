@@ -1,4 +1,3 @@
-// src/app/api/auth/register/route.js
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import dbConnect from '@/lib/dbConnect';
@@ -37,11 +36,12 @@ export async function POST(request) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Create user
+    // Create user with proper data structure
     const result = await usersCollection.insertOne({
-      name,
-      email,
+      name: name.trim(),
+      email: email.toLowerCase(),
       password: hashedPassword,
+      image: null,
       emailVerified: new Date(),
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -50,7 +50,12 @@ export async function POST(request) {
     return NextResponse.json(
       { 
         message: 'User created successfully',
-        userId: result.insertedId 
+        userId: result.insertedId,
+        user: {
+          id: result.insertedId.toString(),
+          name: name.trim(),
+          email: email.toLowerCase(),
+        }
       },
       { status: 201 }
     );
